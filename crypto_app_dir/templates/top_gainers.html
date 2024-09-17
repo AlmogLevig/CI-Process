@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 10 Gainers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .back-button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Top 10 Gainers in the Last 24 Hours</h1>
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Symbol</th>
+            <th>Price (USD)</th>
+            <th>24h Change</th>
+        </tr>
+        {% for coin in data %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ coin.name }}</td>
+            <td>{{ coin.symbol.upper() }}</td>
+            <td>${{ coin.current_price }}</td>
+            <td><span style="color:green;">{{ "{:.2f}".format(coin.price_change_percentage_24h) }}%</span></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="back-button">
+        <a href="{{ url_for('index') }}">Back to Home</a>
+    </div>
+</body>
+</html>

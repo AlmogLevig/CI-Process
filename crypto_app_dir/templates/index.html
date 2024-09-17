@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Cryptocurrencies</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .average {
+            margin-bottom: 20px;
+        }
+        .buttons {
+            margin-bottom: 20px;
+        }
+        .buttons a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .buttons a:hover {
+            background-color: #45a049;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        .search-bar input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .search-bar button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .search-bar button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Top 10 Cryptocurrencies by Market Cap</h1>
+    <div class="average">
+        <p>Average Market Cap: ${{ "{:,.2f}".format(avg_market_cap) }}</p>
+        <p>Average Price: ${{ "{:,.2f}".format(avg_price) }}</p>
+    </div>
+    <div class="buttons">
+        <a href="{{ url_for('top_gainers') }}">Top 10 Gainers</a>
+        <a href="{{ url_for('top_losers') }}">Top 10 Losers</a>
+    </div>
+    <div class="search-bar">
+        <form action="{{ url_for('search') }}" method="post">
+            <input type="text" name="coin_name" placeholder="Search for a cryptocurrency" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="download-button">
+        <a href="{{ url_for('download_csv') }}" class="btn btn-primary">Download CSV</a>
+    </div>
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Symbol</th>
+            <th>Price (USD)</th>
+            <th>Market Cap (USD)</th>
+            <th>24h Change</th>
+        </tr>
+        {% for coin in data %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ coin.name }}</td>
+            <td>{{ coin.symbol.upper() }}</td>
+            <td>${{ coin.current_price }}</td>
+            <td>${{ "{:,.2f}".format(coin.market_cap) }}</td>
+            <td>{% if coin.price_change_percentage_24h >= 0 %}
+                <span style="color:green;">{{ "{:.2f}".format(coin.price_change_percentage_24h) }}%</span>
+                {% else %}
+                <span style="color:red;">{{ "{:.2f}".format(coin.price_change_percentage_24h) }}%</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

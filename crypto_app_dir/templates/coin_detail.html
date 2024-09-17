@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ coin.name }} Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .coin-detail {
+            max-width: 600px;
+            margin: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .back-button {
+            margin-top: 20px;
+        }
+        .back-button a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-button a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="coin-detail">
+        <h1>{{ coin.name }} ({{ coin.symbol.upper() }})</h1>
+        <table>
+            <tr>
+                <th>Attribute</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Current Price (USD)</td>
+                <td>${{ coin.market_data.current_price.usd }}</td>
+            </tr>
+            <tr>
+                <td>Market Cap (USD)</td>
+                <td>${{ "{:,.2f}".format(coin.market_data.market_cap.usd) }}</td>
+            </tr>
+            <tr>
+                <td>24h Change</td>
+                <td>{% if coin.market_data.price_change_percentage_24h >= 0 %}
+                    <span style="color:green;">{{ "{:.2f}".format(coin.market_data.price_change_percentage_24h) }}%</span>
+                    {% else %}
+                    <span style="color:red;">{{ "{:.2f}".format(coin.market_data.price_change_percentage_24h) }}%</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Rank</td>
+                <td>{{ coin.market_cap_rank }}</td>
+            </tr>
+        </table>
+        <div class="back-button">
+            <a href="{{ url_for('index') }}">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
