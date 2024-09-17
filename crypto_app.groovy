@@ -9,7 +9,7 @@ pipeline {
         dockerImage = '' // Set as a global parameter
 
         // Agent environment parameters
-        DOCKER_BUILD_AGENT = 'CISLV'  // Agent for build docker image
+        BUILD_AGENT = 'CISLV'  // Agent for build docker image
         K8S_DEPLOY_AGENT = 'KUBESLV'  // Agent for deploying crypto-app on Kubernetes cluster
         
         // credential environment parameters
@@ -21,14 +21,14 @@ pipeline {
     stages {
         stage('CI stages') {
             agent {
-                label "${env.DOCKER_BUILD_AGENT}"
+                label "${env.BUILD_AGENT}"
             }
             steps {
                 script {
                     echo "Starting Docker build process..."
                     
                     stage('Checkout scm') {
-                        echo "Cloning the repository into ${env.DOCKER_BUILD_AGENT}"
+                        echo "Cloning the repository into ${env.BUILD_AGENT}"
                         checkout scm
                     }
 
@@ -42,8 +42,8 @@ pipeline {
                         echo "Do docker login to DockerHub"
                     }
 
-                    stage("Push '${dockerImage}' Image") {
-                        echo "Pushing the '${dockerImage}'' Docker image to the Dockerhub"
+                    stage("Push '${env.dockerImage}' Image") {
+                        echo "Pushing the '${env.dockerImage}'' Docker image to the Dockerhub"
                     }
                 }
             }
@@ -57,8 +57,12 @@ pipeline {
                 script {
                     def nodeIP = sh(script: "kubectl get nodes -o jsonpath='{.items[0].status.addresses[0].address}'", returnStdout: true).trim()
 
-                    stage("Pull ${dockerImage}' Image"){
-                        echo "Pull the '${dockerImage}' Docker image from Dockerhub"
+                    stage("Pull ${env.dockerImage}' Image"){
+                        echo "Pull the '${env.dockerImage}' Docker image from Dockerhub"
+                    }
+
+                    stage("Deploying ${env.APP_NAME}' on K8s cluster"){
+                        echo "Deploying ${env.APP_NAME}' on K8s cluster"
                     }
 
                     stage('Post Deployment') {
