@@ -58,11 +58,11 @@ pipeline {
                     def nodeIP = sh(script: "kubectl get nodes -o jsonpath='{.items[0].status.addresses[0].address}'", returnStdout: true).trim()
 
                     stage("Pull ${dockerImage}' Image"){
-                        echo "pull the '${dockerImage}' Docker image to the Dockerhub"
+                        echo "Pull the '${dockerImage}' Docker image from Dockerhub"
                     }
 
                     stage('Post Deployment') {
-                        echo "verify the web-app on the cluster"
+                        echo "Verify the web-app on the cluster"
                     }
                 }
             }
