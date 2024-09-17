@@ -9,8 +9,8 @@ pipeline {
         dockerImage = '' // Set as a global parameter
 
         // Agent environment parameters
-        DOCKER_BUILD_AGENT = ''  // Agent for build docker image
-        K8S_DEPLOY_AGENT = 'k8s-server'  // Agent for deploying crypto-app on Kubernetes
+        DOCKER_BUILD_AGENT = 'CISLV'  // Agent for build docker image
+        K8S_DEPLOY_AGENT = 'KUBESLV'  // Agent for deploying crypto-app on Kubernetes cluster
         
         // credential environment parameters
         DOCKER_USERNAME = credentials('docker-username')
