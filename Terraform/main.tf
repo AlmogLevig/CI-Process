@@ -1,11 +1,11 @@
 resource "aws_instance" "test_ec2" {
     ami                         = var.ami
     instance_type               = var.instance_type 
-    key_name        = var.ssh_key
+    key_name                    = var.ssh_key
 
     subnet_id                   = data.aws_subnets.selected.ids[0]
     vpc_security_group_ids      = [aws_security_group.test_ec2_sg.id]
-    associate_public_ip_address = true
+    associate_public_ip_address = false
 
     user_data = <<-EOF
     #!/bin/bash

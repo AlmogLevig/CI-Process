@@ -40,3 +40,8 @@ variable "aws_profile" {
   type        = string
   default     = "default"
 }
+
+variable "vip" {
+  description = "Elastic IP"
+  type        = string
+}
