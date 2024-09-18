@@ -1,6 +1,5 @@
 # variables.tf
 variable "my_ip" {
-  description = "Your public IP address"
   type        = string
 }
 
@@ -11,6 +10,14 @@ variable "aws_region" {
 
 variable "ami" {
   description = "AL2 AMI"
+  type        = string
+}
+
+variable "test_tag" {
+  type        = string
+}
+
+variable "leumi_ip" {
   type        = string
 }
 
