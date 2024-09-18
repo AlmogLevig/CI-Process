@@ -1,0 +1,12 @@
+# terraform.tfvars.example
+my_ip           = "10.1.1.10"
+ssh_key         = "Key"
+key_path        = "/path/Key.pem"
+
+aws_region      = "us-east-1"
+ami             = "ami-0a5c3558529277641" # al2
+instance_type   = "t2.micro"
+test_tag        = "TEST_EC2"
+vip             = "eipalloc-0f387bb8841a1b536"
+
+leumi_ip        = "91.231.246.50"
