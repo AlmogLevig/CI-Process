@@ -19,3 +19,16 @@ resource "aws_instance" "test_ec2" {
       Name = "${var.test_tag}"
     }
 }
+
+resource "aws_lb" "test_ec2_nlb" {
+  name               = "test-ec2-nlb"
+  internal           = false
+  load_balancer_type = "network"
+  subnets            = data.aws_subnets.selected.ids
+
+  enable_deletion_protection = false
+
+  tags = {
+    Name = "${var.test_tag}_nlb"
+  }
+}
