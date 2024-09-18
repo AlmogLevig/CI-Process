@@ -11,3 +11,8 @@ data "aws_subnets" "selected" {
     values = [data.aws_vpc.selected.id]
   }
 }
+
+resource "aws_eip" "test_ec2_eip" {
+  domain = "vpc"
+  instance = aws_instance.test_ec2.id
+}
