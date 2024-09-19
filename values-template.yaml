@@ -1,0 +1,26 @@
+pod:
+  name: front-end
+  image:
+    repository: {{DOCKER_REPO}}/{{APP_NAME}}
+    tag: {{DOCKER_TAG}}
+  ports:
+    containerPort: 5000
+  
+service:
+  type: NodePort
+  port: 443
+  targetPort: 5000
+  nodePort: 30443
+
+ingress:
+  host: "crypto.local"
+
+namespace: crypto-app-ns
+
+certManager:
+  enabled: true
+  issuer: crypto-app-ss
+  certificate:
+    name: crypto-app-ca-cert
+    secretName: crypto-app-ca-cert-secret
+    commonName: crypto-app-ca

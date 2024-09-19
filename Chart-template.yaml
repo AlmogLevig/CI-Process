@@ -1,0 +1,19 @@
+apiVersion: v2
+name: {{APP_NAME}}
+description: A Helm chart for {{APP_NAME}}
+version: {{CHART_VERSION}}
+appVersion: "{{APP_VERSION}}"
+type: application
+
+keywords:
+  - pod
+  - service
+  - nodeport
+  - kubernetes
+
+maintainers:
+  - name: Almog Levi
+    email: almog.levig@gmail.com
+
+sources:
+  - https://github.com/AlmogLevig/saas_application/

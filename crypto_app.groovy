@@ -12,10 +12,9 @@ pipeline {
         BUILD_AGENT = 'CISLV'  // Agent for build docker image
         K8S_DEPLOY_AGENT = 'KUBESLV'  // Agent for deploying crypto-app on Kubernetes cluster
         
-        // credential environment parameters
-        DOCKER_USERNAME = credentials('docker-username')
-        DOCKER_PASSWORD = credentials('docker-password')
-        KUBECONFIG = credentials('kubeconfig')  // Kubernetes credentials for remote cluster
+        // Credential environment parameters
+        DOCKER_TOKEN = credentials('docker-token')
+        KUBECONFIG = credentials('kubeconfig-credentials')  // Kubernetes credentials for remote cluster
     }
 
     stages {
@@ -40,6 +39,9 @@ pipeline {
 
                     stage('Login to Docker Registry') {
                         echo "Do docker login to DockerHub"
+                        sh """
+                            echo ${DOCKERHUB_TOKEN} | docker login -u ${env.DOCKER_REPO} --password-stdin
+                        """
                     }
 
                     stage("Push '${env.dockerImage}' Image") {
@@ -57,12 +59,34 @@ pipeline {
                 script {
                     def nodeIP = sh(script: "kubectl get nodes -o jsonpath='{.items[0].status.addresses[0].address}'", returnStdout: true).trim()
 
-                    stage("Pull ${env.dockerImage}' Image"){
-                        echo "Pull the '${env.dockerImage}' Docker image from Dockerhub"
+                    stage("Generate dynamic Helm values.yaml"){
+                        echo "Generated dynamic Helm values.yaml"
+                        def valuesTemplate = readFile 'values-template.yaml'
+
+                        def valuesContent = valuesTemplate.replace('{{DOCKER_REPO}}', "${env.DOCKER_REPO}")
+                                                      .replace('{{APP_NAME}}', "${env.APP_NAME}")
+                                                      .replace('{{DOCKER_TAG}}', "${env.APP_VERSION}-${env.BUILD_NUMBER}")
+                        
+                        writeFile(file: 'Helm/values.yaml', text: valuesContent)
+                    }
+
+                    stage("Generate dynamic Helm/Chart.yaml") {
+                        def chartTemplate = readFile 'Chart-template.yaml'
+
+                        def chartContent = chartTemplate.replace('{{APP_NAME}}', "${env.APP_NAME}")
+                                                        .replace('{{CHART_VERSION}}', "${env.CHART_VERSION}")
+                                                        .replace('{{APP_VERSION}}', "${env.APP_VERSION}")
+
+                        writeFile(file: 'Helm/Chart.yaml', text: chartContent)
+
+                        echo "Generated dynamic Helm Chart.yaml"
                     }
 
                     stage("Deploying ${env.APP_NAME}' on K8s cluster"){
                         echo "Deploying ${env.APP_NAME}' on K8s cluster"
+                        sh """
+                            helm upgrade --install ${env.APP_NAME} ./Helm
+                        """
                     }
 
                     stage('Post Deployment') {

@@ -3,7 +3,8 @@
 /helm
 **/*.key
 **/*.crt
-
+Chart.yaml
+values.yaml
 
 # .tfstate files
 *.tfstate
