@@ -57,6 +57,11 @@ pipeline {
             }
             steps {
                 script {
+                    stage('Checkout scm') {
+                        echo "Cloning the repository into ${env.BUILD_AGENT}"
+                        checkout scm
+                    }
+
                     def nodeIP = sh(script: "kubectl get nodes -o jsonpath='{.items[0].status.addresses[0].address}'", returnStdout: true).trim()
 
                     stage("Generate dynamic Helm values.yaml"){
@@ -82,7 +87,7 @@ pipeline {
                         echo "Generated dynamic Helm Chart.yaml"
                     }
 
-                    stage("Deploying crypto_app on K8s cluster"){
+                    stage("Deploying '${env.APP_NAME}' on K8s cluster"){
                         echo "Deploying '${env.APP_NAME}' on K8s cluster"
                         sh """
                             helm upgrade --install ${env.APP_NAME} ./Helm
