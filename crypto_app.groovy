@@ -82,8 +82,8 @@ pipeline {
                         echo "Generated dynamic Helm Chart.yaml"
                     }
 
-                    stage("Deploying '${env.APP_NAME}' on K8s cluster"){
-                        echo "Deploying ${env.APP_NAME}' on K8s cluster"
+                    stage("Deploying crypto_app on K8s cluster"){
+                        echo "Deploying '${env.APP_NAME}' on K8s cluster"
                         sh """
                             helm upgrade --install ${env.APP_NAME} ./Helm
                         """
