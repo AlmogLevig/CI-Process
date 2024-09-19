@@ -13,14 +13,14 @@ service:
   nodePort: 30443
 
 ingress:
-  host: "crypto.local"
+  host: {{HOST_NAME}}
 
-namespace: crypto-app-ns
+namespace: {{APP_NAME}}-ns
 
 certManager:
   enabled: true
-  issuer: crypto-app-ss
+  issuer: {{APP_NAME}}-ss
   certificate:
-    name: crypto-app-ca-cert
-    secretName: crypto-app-ca-cert-secret
-    commonName: crypto-app-ca
+    name: {{APP_NAME}}-ca-cert
+    secretName: {{APP_NAME}}-ca-cert-secret
+    commonName: {{APP_NAME}}-ca

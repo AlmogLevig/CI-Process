@@ -1,8 +1,8 @@
 apiVersion: v2
 name: {{APP_NAME}}
 description: A Helm chart for {{APP_NAME}}
-version: {{CHART_VERSION}}
-appVersion: "{{APP_VERSION}}"
+version: 0.1.0
+appVersion: "1.0"
 type: application
 
 keywords:
