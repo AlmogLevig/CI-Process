@@ -58,7 +58,7 @@ pipeline {
             steps {
                 script {
                     stage('Checkout scm') {
-                        echo "Cloning the repository into ${env.BUILD_AGENT}"
+                        echo "Cloning the repository into ${env.K8S_DEPLOY_AGENT}"
                         checkout scm
                     }
 
