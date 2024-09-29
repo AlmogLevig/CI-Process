@@ -1,8 +1,6 @@
-# interview_assignment
-This repository has been dedicated for home asignment - Leumi
+# CI Process
 
-
-# Crypto App CI/CD Pipeline
+# Crypto App CI Pipeline
 This project defines a Jenkins Declarative Pipeline that automates the build, push, and deployment of a Dockerized web application (Crypto App) to a Kubernetes cluster using Helm.
 
 ## Prerequisites
